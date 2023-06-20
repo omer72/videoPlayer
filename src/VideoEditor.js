@@ -19,6 +19,10 @@ function VideoEditor() {
         });
     }, []);
 
+    useEffect(() =>{
+
+    },[])
+
     const handleTrim = (value, position) => {
         if (position === "start") {
             setTrimStart(value);
@@ -29,6 +33,58 @@ function VideoEditor() {
         }
     };
 
+    const updateTime = (value) => {
+        console.log(value.target.value);
+        videoRef.current.currentTime = value.target.value;
+    }
+
+    const updateStartTime = (value) => {
+        if (videoRef.current.currentTime < value){
+            videoRef.current.currentTime = value;
+        }
+        setTrimStart(value);
+    }
+
+    const updateEndTime = (value) => {
+        setTrimEnd(value);
+    }
+
+    const updateCurrentTime = (value) => {
+        videoRef.current.currentTime = value;
+    }
+
+    const getVideoThumbnail = (videoUrl, secs) => {
+        return new Promise((resolve, reject) => {
+            let video = document.createElement('video');
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+            let source = document.createElement('source');
+
+            source.src = videoUrl;
+            video.appendChild(source);
+
+            video.addEventListener('loadeddata', () => {
+                video.currentTime = secs;
+            }, false);
+
+            video.addEventListener('seeked', () => {
+                try {
+                    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+                    let img = new Image();
+                    img.src = canvas.toDataURL();
+                    resolve(img.src);
+                } catch(e) {
+                    reject(e);
+                }
+            }, false);
+
+            video.addEventListener('error', () => {
+                reject("Error when loading video");
+            }, false);
+        });
+    }
+
+
     return (
         <div>
             <input type="file" onChange={(e) => {
@@ -36,25 +92,18 @@ function VideoEditor() {
                 const url = URL.createObjectURL(file);
                 videoRef.current.src = url;
             }} accept="video/*" />
+            <video ref={videoRef} controls style={{ width: '50%', height:'50%' }} controlsList="nofullscreen nodownload noremoteplayback noplaybackrate nofoobar" ></video>
 
-            <video ref={videoRef} controls style={{ width: '50%', height:'50%' }}></video>
 
-            {/*<div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>*/}
-            {/*    <button onClick={() => handleTrim(currentTime, "start")}>Trim Start</button>*/}
-            {/*    <button onClick={() => handleTrim(currentTime, "end")}>Trim End</button>*/}
-            {/*</div>*/}
-
-            {/*<div style={{ display: 'flex', alignItems: 'center', height: '30px', background: '#ddd' }}>*/}
-            {/*    <div style={{ height: '10px', background: '#ff0000', width: `${(trimStart / videoDuration) * 100}%` }}></div>*/}
-            {/*    <div style={{ height: '10px', background: '#00ff00', width: `${((trimEnd - trimStart) / videoDuration) * 100}%` }}></div>*/}
-            {/*    <div style={{ height: '10px', background: '#ff0000', width: `${((videoDuration - trimEnd) / videoDuration) * 100}%` }}></div>*/}
-            {/*</div>*/}
             <TrimBar
                 videoDuration={videoDuration}
                 trimStart={trimStart}
                 trimEnd={trimEnd}
-                setTrimStart={(value) => setTrimStart(value)}
-                setTrimEnd={(value) => setTrimEnd(value)}/>
+                setTrimStart={updateStartTime}
+                setTrimEnd={updateEndTime}
+                currentTime={videoRef.current != null ? videoRef.current.currentTime: 0}
+                setCurrentTime={updateCurrentTime}
+            />
         </div>
     );
 }

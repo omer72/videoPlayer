@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const TrimBar = ({
                      videoDuration,
                      trimStart,
                      trimEnd,
                      setTrimStart,
-                     setTrimEnd
+                     setTrimEnd,
+                     currentTime,
+                     setCurrentTime
                  }) => {
     const [dragging, setDragging] = useState(null);
 
@@ -20,11 +22,22 @@ const TrimBar = ({
             (getRelativePosition(e, videoProgress) / videoProgress.offsetWidth) *
             videoDuration;
 
-        if (position === "start") {
-            setTrimStart(newTime);
-        } else {
-            setTrimEnd(newTime);
+        switch (position){
+            case 'start':
+                setTrimStart(newTime);
+                break;
+            case 'end':
+                setTrimEnd(newTime);
+                break;
+            case 'cursor':
+                if (newTime < trimEnd && newTime > trimStart) {
+                    setCurrentTime(newTime);
+                }
+                break;
+            default:
+                break;
         }
+
     };
 
     useEffect(() => {
@@ -48,6 +61,7 @@ const TrimBar = ({
     }, [dragging, updateTrim]);
 
     return (
+        <div>
         <div
             id="videoProgress"
             style={{
@@ -70,7 +84,7 @@ const TrimBar = ({
                     background: "#00ff00",
                     width: `${((trimEnd - trimStart) / videoDuration) * 100}%`
                 }}
-                onMouseDown={() => setDragging("both")}
+                //onMouseDown={() => setDragging("both")}
             >
                 <div
                     style={{
@@ -96,10 +110,40 @@ const TrimBar = ({
                 style={{
                     height: "10px",
                     background: "#ff0000",
+                    cursor: "pointer",
                     width: `${((videoDuration - trimEnd) / videoDuration) * 100}%`
                 }}
+
             ></div>
+
         </div>
+            <div id="videoProgress2"
+                 style={{
+                     display: "flex",
+                     alignItems: "center",
+                     height: "30px",
+                     background: "#ddd"
+                 }}>
+                <div
+                    style={{
+                        width: "10px",
+                        height: "10px",
+                        background: "#ddd",
+                        paddingRight: `${(currentTime/videoDuration)*100}%`
+                    }}>
+                </div>
+                <div
+                        style={{
+                        width: "10px",
+                        height: "10px",
+                        background: "#babad7",
+                        cursor: "pointer",
+                    }}
+                        onMouseDown={() => setDragging("cursor")}>
+                </div>
+            </div>
+        </div>
+
     );
 };
 
