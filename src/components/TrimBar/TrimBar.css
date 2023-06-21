@@ -1,6 +1,7 @@
 .trimBar {
     position: relative;
-    margin-top: 10px;
+    width: 80%;
+    margin: auto;
 
 }
 .trimBar .sliderBackground {
@@ -15,7 +16,7 @@
 .trimBar .sliderStart {
     width: 10px;
     height: 65px;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 0 0 10px;
     background: #E2B425;
     cursor: ew-resize;
     z-index:1
@@ -23,7 +24,7 @@
 .trimBar .sliderEnd {
     width: 10px;
     height: 65px;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 0 10px 10px 0;
     background: #E2B425;
     cursor: ew-resize;
     z-index:1
@@ -39,6 +40,7 @@
 .trimBar .sliderCenter {
     height: 60px;
     border: 3px solid #E2B425;
+    z-index:1
 }
 
 .trimBar .videoImages {
@@ -57,9 +59,31 @@
 .trimBar .videoProgressCursor {
     position: absolute;
     display: flex;
-    alignItems: center;
+    align-items: center;
     height: 80px;
     width:100%;
+}
+.trimBar .videoProgressCursor .videoProgressCursorGroup {
+    display: flex;
+    flex-direction: column;
+}
+.trimBar .videoProgressCursor .videoProgressCursorIcon{
+    position: relative;
+    left: -6px;
+    height: 15px;
+    z-index: 5;
+    cursor: pointer;
+    transform: rotate(180deg);
+
+}
+
+.trimBar .videoProgressCursor .videoProgressCursorLine{
+    position: relative;
+    width: 3px;
+    height: 60px;
+    background: white;
+    cursor: pointer;
+    z-index: 5;
 }
 
 

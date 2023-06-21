@@ -27,7 +27,6 @@ const TrimBar = ({
             (getRelativePosition(e, videoProgress) / videoProgress.offsetWidth) *
             videoDuration;
         setMovment(newTime - currentPosition);
-        const directionRight = newTime >= currentPosition ? true : false;
         setCurrentPosition(newTime);
         switch (position){
             case 'start':
@@ -39,7 +38,7 @@ const TrimBar = ({
             case 'both':
                 setTrimStart(trimStart + movment);
                 setTrimEnd(trimEnd + movment);
-                console.log('newTime: ' + newTime);
+                //setCurrentTime(newTime);
                 break;
             case 'cursor':
                 if (newTime < trimEnd && newTime > trimStart) {
@@ -76,47 +75,31 @@ const TrimBar = ({
     return (
         <div className="trimBar">
         <div className="sliderBackground" id="videoProgress">
-            <div className="sliderEmpty"
-                style={{
-                    width: `${(trimStart / videoDuration) * 100}%`
-                }}
-            ></div>
-            <div className="sliderStart" onMouseDown={() => setDragging("start")}
-            />
+            <div className="sliderEmpty" style={{width: `${(trimStart / videoDuration) * 100}%`}}></div>
+            <div className="sliderStart" onMouseDown={() => setDragging("start")}/>
             <div className="sliderCenter"
                 style={{width: `${((trimEnd - trimStart) / videoDuration) * 100}%`}}
                 onMouseDown={() => setDragging("both")}
+                //onClick={() => setDragging("both")}
             >
             </div>
-            <div className="sliderEnd" onMouseDown={() => setDragging("end")}
-            />
+            <div className="sliderEnd" onMouseDown={() => setDragging("end")}/>
             <div className="sliderEmpty"
-                style={{
-                    width: `${((videoDuration - trimEnd) / videoDuration) * 100}%`
-                }}
+                style={{width: `${((videoDuration - trimEnd) / videoDuration) * 100}%`}}
             ></div>
-
         </div>
             <div id="videoProgressCursor" className="videoProgressCursor">
                 <div className="videoProgressCursorBefore"
                     style={{paddingRight: `${(currentTime/videoDuration)*100}%`}}>
                 </div>
-                <div>
-                    <img src={TriangleIcon}/>
-                    <div
-                        style={{
-                        width: "2px",
-                        height: "80px",
-                        background: "#babad7",
-                        cursor: "pointer",
-                    }}
-                        onMouseDown={() => setDragging("cursor")}>
-                </div>
+                <div onMouseDown={() => setDragging("cursor")} className="videoProgressCursorGroup">
+                    <img alt="timeLineControler" src={TriangleIcon} className="videoProgressCursorIcon"/>
+                    <div className="videoProgressCursorLine"></div>
                 </div>
             </div>
-            <div className="videoImages">
+            <div className="videoImages" >
                 {imagePath.map((imgUrl, index) =>{
-                    return <img src={imgUrl} key={index} style={{width:`${100 / imagePath.length}%`}}/>
+                    return <img alt="videoImages" src={imgUrl} key={index} style={{width:`${100 / imagePath.length}%`}} draggable={false}/>
                 })}
             </div>
         </div>

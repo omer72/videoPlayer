@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import TrimBar from "../TrimBar/TrimBar";
+import TriangleIcon from "../../assets/icon/traingle-icon.svg"
 import './VideoEditor.css';
+import {getFormatedTime} from "../../utils";
 
 function VideoEditor() {
     const videoRef = useRef(null);
@@ -9,6 +12,8 @@ function VideoEditor() {
     const [trimStart, setTrimStart] = useState(0);
     const [trimEnd, setTrimEnd] = useState(0);
     const [imagePath, setImagePath] = useState([]);
+    const [showTime, setShowTime] = useState('--:--');
+    const [isPlaying, setIsPlaying] = useState(false);
     const trimEndRef = useRef(trimEnd);
 
     // Update the ref value whenever count changes
@@ -24,30 +29,27 @@ function VideoEditor() {
         });
         video.addEventListener("timeupdate", function () {
             setCurrentTime(video.currentTime);
+            setShowTime(getFormatedTime(videoRef.current.currentTime) + "/" + getFormatedTime(videoRef.current.duration));
             if (video.currentTime > trimEndRef.current){
                 video.pause();
             }
         });
     }, []);
 
-    useEffect(() =>{
+    // const handleTrim = (value, position) => {
+    //     if (position === "start") {
+    //         setTrimStart(value);
+    //         videoRef.current.currentTime = value;
+    //     } else {
+    //         setTrimEnd(value);
+    //         videoRef.current.currentTime = value;
+    //     }
+    // };
 
-    },[])
-
-    const handleTrim = (value, position) => {
-        if (position === "start") {
-            setTrimStart(value);
-            videoRef.current.currentTime = value;
-        } else {
-            setTrimEnd(value);
-            videoRef.current.currentTime = value;
-        }
-    };
-
-    const updateTime = (value) => {
-        console.log(value.target.value);
-        videoRef.current.currentTime = value.target.value;
-    }
+    // const updateTime = (value) => {
+    //     console.log(value.target.value);
+    //     videoRef.current.currentTime = value.target.value;
+    // }
 
     const updateStartTime = (value) => {
         if (videoRef.current.currentTime < value){
@@ -115,17 +117,29 @@ function VideoEditor() {
         });
     }
 
+    const playVideo = () => {
+        if (!isPlaying){
+            videoRef.current.pause();
+            setIsPlaying(!isPlaying);
+        } else  if (videoRef.current.currentTime < trimEnd) {
+            videoRef.current.play();
+            setIsPlaying(!isPlaying);
+        }
+
+    }
+
+
     return (
         <div>
             <input type="file" onChange={loadVideo} accept="video/*" /><br/>
             <div style={{display:"flex", justifyContent:"center"}}>
-                {/*<div style={{display:"flex"}}>*/}
-                {/*    {videoRef.current ? videoRef.current.currentTime : 0}<br/>*/}
-                {/*    {trimStart}<br/>*/}
-                {/*    {trimEnd}*/}
-                {/*</div>*/}
-            <video ref={videoRef} controls style={{ width: '50%', height:'50%' }} controlsList="nofullscreen nodownload noremoteplayback noplaybackrate nofoobar" ></video>
-
+            <div className="videoWindow">
+                <video ref={videoRef} className="video" controls={false} ></video>
+                <div className="videoCtrl">
+                    <img alt='controller' src={TriangleIcon} className="videoControl" onClick={playVideo}/>
+                    <label className="videoLabel">{showTime}</label>
+                </div>
+            </div>
             </div>
             <TrimBar
                 videoDuration={videoDuration}
@@ -137,7 +151,6 @@ function VideoEditor() {
                 setCurrentTime={updateCurrentTime}
                 imagePath={imagePath}
             />
-
         </div>
     );
 }

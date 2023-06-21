@@ -1,3 +1,31 @@
 .video-images{
     display: flex;
 }
+
+.videoWindow{
+    display: flex;
+    height: 80vh;
+    flex-direction: column;
+    background-color: black;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.videoWindow .video{
+    padding: 20px;
+}
+.videoWindow .videoCtrl {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.videoWindow .videoCtrl .videoControl{
+    width:20px;
+    transform: rotate(90deg);
+}
+
+.videoWindow  .videoCtrl .videoLabel{
+    color: white;
+}
