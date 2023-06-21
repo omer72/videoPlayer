@@ -1,0 +1,65 @@
+.trimBar {
+    position: relative;
+    margin-top: 10px;
+
+}
+.trimBar .sliderBackground {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background: #000000;
+
+}
+.trimBar .sliderStart {
+    width: 10px;
+    height: 65px;
+    border-radius: 10px 0px 0px 10px;
+    background: #E2B425;
+    cursor: ew-resize;
+    z-index:1
+}
+.trimBar .sliderEnd {
+    width: 10px;
+    height: 65px;
+    border-radius: 0px 10px 10px 0px;
+    background: #E2B425;
+    cursor: ew-resize;
+    z-index:1
+}
+.trimBar .sliderEmpty {
+    height: 80px;
+    background: black;
+    opacity: 0.7;
+
+    z-index:1
+}
+
+.trimBar .sliderCenter {
+    height: 60px;
+    border: 3px solid #E2B425;
+}
+
+.trimBar .videoImages {
+    position: absolute;
+    height: 80px;
+    width: 100%;
+    top: 10px;
+    opacity: 0.8;
+    z-index: 0;
+}
+
+.trimBar .videoImages img {
+    height: 60px
+}
+
+.trimBar .videoProgressCursor {
+    position: absolute;
+    display: flex;
+    alignItems: center;
+    height: 80px;
+    width:100%;
+}
+
+

@@ -1,6 +1,5 @@
 
-import './App.css';
-import VideoEditor from "./VideoEditor";
+import VideoEditor from "./components/VideoEditor/VideoEditor";
 
 function App() {
   return (
