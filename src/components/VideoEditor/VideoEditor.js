@@ -79,6 +79,8 @@ function VideoEditor() {
             video.addEventListener('loadedmetadata', () => {
                 video.currentTime = 0;
                 jumps = video.duration / imageCount ;
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
             });
 
             video.addEventListener('seeked', () => {
