@@ -83,6 +83,7 @@ function VideoEditor() {
                 canvas.height = video.videoHeight;
             });
 
+
             video.addEventListener('seeked', () => {
                 // Create the thumbnail
                 context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);

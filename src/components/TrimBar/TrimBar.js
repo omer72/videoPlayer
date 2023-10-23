@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import TriangleIcon from "../../assets/icon/traingle-icon.svg"
 import './TrimBar.css';
 
@@ -12,6 +12,7 @@ const TrimBar = ({
                      setCurrentTime,
                      imagePath
                  }) => {
+    const videoProgressRef = useRef(null);
     const [dragging, setDragging] = useState(null);
     const [currentPosition, setCurrentPosition] = useState(0);
     const [movment, setMovment] = useState(0);
@@ -22,9 +23,9 @@ const TrimBar = ({
     };
 
     const updateTrim = (e, position) => {
-        const videoProgress = document.getElementById("videoProgress");
+        //const videoProgress = document.getElementById("videoProgress");
         const newTime =
-            (getRelativePosition(e, videoProgress) / videoProgress.offsetWidth) *
+            (getRelativePosition(e, videoProgressRef.current) / videoProgressRef.current.offsetWidth) *
             videoDuration;
         setMovment(newTime - currentPosition);
         setCurrentPosition(newTime);
@@ -74,7 +75,7 @@ const TrimBar = ({
 
     return (
         <div className="trimBar">
-        <div className="sliderBackground" id="videoProgress">
+        <div className="sliderBackground" id="videoProgress" ref={videoProgressRef}>
             <div className="sliderEmpty" style={{width: `${(trimStart / videoDuration) * 100}%`}}></div>
             <div className="sliderStart" onMouseDown={() => setDragging("start")}/>
             <div className="sliderCenter"
