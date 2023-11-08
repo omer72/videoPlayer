@@ -39,7 +39,6 @@ const TrimBar = ({
             case 'both':
                 setTrimStart(trimStart + movment);
                 setTrimEnd(trimEnd + movment);
-                //setCurrentTime(newTime);
                 break;
             case 'cursor':
                 if (newTime < trimEnd && newTime > trimStart) {
@@ -81,7 +80,7 @@ const TrimBar = ({
             <div className="sliderCenter"
                 style={{width: `${((trimEnd - trimStart) / videoDuration) * 100}%`}}
                 onMouseDown={() => setDragging("both")}
-                //onClick={() => setDragging("both")}
+
             >
             </div>
             <div className="sliderEnd" onMouseDown={() => setDragging("end")}/>
